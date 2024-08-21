@@ -24,6 +24,7 @@ add_action('wp_enqueue_scripts', 'load_js');
 
 // Theme Options
 add_theme_support('menus');
+add_theme_support('post-thumbnails');
 
 // Menus
 register_nav_menus(
@@ -33,3 +34,7 @@ register_nav_menus(
         'footer-menu' => 'Footer Menu Location',
     )
 );
+
+// Custom Image Sizes
+add_image_size('blog-large', 800, 400, false); // 缩放不裁剪 保持横纵比 自适应
+add_image_size('blog-small', 300, 200, true); // 缩放裁剪 保持300*200

@@ -2,7 +2,7 @@
 
 <section class="page-wrap">
     <div class="container">
-
+        <!-- category或者tag的标题 -->
         <h1><?php echo single_cat_title(); ?></h1>
         <?php get_template_part('includes/section', 'archive'); ?>
 
