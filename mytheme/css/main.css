@@ -4,6 +4,12 @@ header {
   height: 100px;
 }
 
+.widget {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
 .page-wrap {
   padding: 2rem 0;
 }
