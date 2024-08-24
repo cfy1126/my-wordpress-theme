@@ -17,6 +17,19 @@
             </div>
 
             <div class="col-lg-6">
+                <!-- 
+                    ID: 1
+                    Title: Enquire about this car
+                    Description: nll
+                    active: 不激活是否显示 false
+                    params: 是否显示表单参数 false
+                    ajax: 是否使用ajax提交 true
+                    tabindex: 100        
+                -->
+                <div class="enquiry_form">
+                    <?php gravity_form(1, "Enquire about this car", null, false, ['rego' => get_field('registration')], true, 100, true); ?>
+                </div>
+
                 <ul>
                     <!-- <li>Color: <?php echo get_post_meta($post->ID, 'Color', true); ?></li> -->
                     <!-- <li>Price: <?php echo get_post_meta($post->ID, 'Price', true); ?></li> -->
@@ -40,9 +53,9 @@
 
                 <?php
                 $gallery = get_field('gallery');
-                if($gallery): ?>
+                if ($gallery): ?>
                     <div class="gallery">
-                        <?php foreach($gallery as $image): ?>
+                        <?php foreach ($gallery as $image): ?>
                             <a href="<?php echo $image['sizes']['blog-large']; ?>">
                                 <img src="<?php echo $image['sizes']['blog-small']; ?>" class="img-fluid" />
                             </a>

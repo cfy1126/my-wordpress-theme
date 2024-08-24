@@ -97,3 +97,30 @@ header .top-bar .sub-menu li .sub-menu {
 ul.features li:last-child {
   display: none;
 }
+
+.enquiry_form .gform_button {
+  width: 100% !important;
+  background-color: green !important;
+  color: #fff !important;
+  display: block !important;
+  border: 0 !important;
+  padding: 1rem !important;
+}
+
+.enquiry_form .gfrom_footer {
+  margin: 0 !important;
+}
+
+.enquiry_form input {
+  width: 100% !important;
+}
+
+.enquiry_form .gform_confirmation_message {
+  font-size: 2rem;
+  text-align: center;
+  line-height: 1.3rem;
+}
+
+.enquiry_form li.gfield {
+  padding-right: 0 !important;
+}
