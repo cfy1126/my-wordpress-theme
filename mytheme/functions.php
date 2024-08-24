@@ -1,5 +1,7 @@
 <?php
 
+use PHPMailer\PHPMailer\SMTP;
+
 function load_css()
 {
     wp_register_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), '5.3.3', 'all');
@@ -112,9 +114,8 @@ add_action('wp_ajax_enquiry', 'enquiry_form');
 add_action('wp_ajax_nopriv_enquiry', 'enquiry_form');
 function enquiry_form()
 {
-    if(!wp_verify_nonce($_POST['nonce'], 'ajax-nonce'))
-    {
-        wp_send_json_error('Nonce is incorrect',401);
+    if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
+        wp_send_json_error('Nonce is incorrect', 401);
         die();
     }
 
@@ -159,10 +160,28 @@ function enquiry_form()
 /**
  * Register Custom Navigation Walker
  */
-function register_navwalker(){
-	require_once get_template_directory() . '/class-wp-bootstrap-navwalker.php';
+function register_navwalker()
+{
+    require_once get_template_directory() . '/class-wp-bootstrap-navwalker.php';
 }
-add_action( 'after_setup_theme', 'register_navwalker' );
+add_action('after_setup_theme', 'register_navwalker');
 
 
-
+add_action('phpmailer_init', 'custom_mailer');
+// $phpmailer 是一个PHPMailer对象 是由wordpress创建的 PHP 邮件程序实例
+function custom_mailer(PHPMailer $phpmailer)
+{
+    $phpmailer->SetFrom('sean@mrdigital.com.au', 'Sean');
+    $phpmailer->Host = 'email-smtp.us-west-2.amazonaws.com';
+    $phpmailer->Port = 587;
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->SMTPSecure = 'tls';
+    /**
+     * SMTP_LOGIN
+     * SMTP_PASSWORD
+     * 是定义在wp-config.php中的常量
+     */
+    $phpmailer->Username = SMTP_LOGIN;
+    $phpmailer->Password = SMTP_PASSWORD;
+    $phpmailer->IsSMTP();
+}
