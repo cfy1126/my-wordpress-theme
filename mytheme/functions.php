@@ -84,7 +84,7 @@ function my_first_post_type()
         'public' => true,
         'has_archive' => true,
         'menu_icon' => 'dashicons-images-alt2',
-        'supports' => array('title', 'editor', 'thumbnail','custom-fields'),
+        'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
         'rewrite' => array('slug' => 'my-cars'),
     );
     register_post_type('cars', $args);
@@ -106,3 +106,45 @@ function my_first_taxonomy()
     register_taxonomy('brands', array('cars'), $args);
 }
 add_action('init', 'my_first_taxonomy');
+
+
+add_action('wp_ajax_enquiry', 'enquiry_form');
+add_action('wp_ajax_nopriv_enquiry', 'enquiry_form');
+function enquiry_form()
+{
+    $formdata = [];
+
+    wp_parse_str($_POST['enquiry'], $formdata);
+    // $data = json_encode($_POST);
+
+    // Admin email
+    $admin_email = get_option('admin_email');
+
+    // Email headers
+    $headers[] = 'Content-Type: text/html; charset=UTF-i';
+    $headers[] = 'From: My Website <' . $admin_email . '>';
+    $headers[] = 'Reply-to: ' . $formdata['email'];
+
+    // Send to
+    $send_to = $admin_email;
+
+    // Subject
+    $subject = "Enquiry from " . $formdata['fname'] . ' ' . $formdata['lname'];
+
+    // Message
+    $message = '';
+
+    foreach ($formdata as $index => $field) {
+        $message .= '<strong>' . $index . '</strong>:' . $field . '<br>';
+    }
+
+    try {
+        if (wp_mail($send_to, $subject, $message, $headers)) {
+            wp_send_json_success("Email send");
+        } else {
+            wp_send_json_error("Email not send");
+        }
+    } catch (Exception $e) {
+        wp_send_json_error($e->getMessage());
+    }
+}
