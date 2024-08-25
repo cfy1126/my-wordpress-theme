@@ -185,3 +185,19 @@ function custom_mailer(PHPMailer $phpmailer)
     $phpmailer->Password = SMTP_PASSWORD;
     $phpmailer->IsSMTP();
 }
+
+
+function my_shortcode()
+{
+    ob_start();
+    get_template_part('includes/latest', 'cars');
+    return ob_get_clean();
+}
+add_shortcode('latest_cars', 'my_shortcode');      
+
+
+function my_phone()
+{
+    return '18273358731';
+}
+add_shortcode('phone', 'my_phone');
