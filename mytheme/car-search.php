@@ -4,11 +4,17 @@
  * Template Name: Car Search
  */
 
+$is_search = count($_GET);
 
 $brands = get_terms([
     'taxonomy' => 'brands',
-    'hide_empy' => false,
-])
+    'hide_empty' => false,
+]);
+
+if ($is_search) {
+    $query = search_query();
+}
+
 ?>
 
 <?php get_header(); ?>
@@ -50,60 +56,94 @@ $brands = get_terms([
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-lg w-100 mb-3">Search</button>
+                    <div class="form-group row mb-3">
+                        <div class="col-lg-6">
+                            <label>From price</label>
 
-                </form>
+                            <select name="price_above" class="form-control">
+                                <?php for ($i = 0; $i < 210000; $i += 10000): ?>
+                                    <option
 
+                                        <?php if (isset($_GET['price_above']) && ($_GET['price_above'] == $i)): ?>
+                                        selected
+                                        <?php endif; ?>
 
+                                        value="<?php echo $i; ?>"><?php echo '$' . number_format($i, 2); ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
 
+                        <div class="col-lg-6">
+                            <label>To price</label>
 
+                            <select name="price_below" class="form-control">
+                                <?php for ($i = 0; $i < 210000; $i += 10000): ?>
+                                    <option
 
-                <?php
-                $args = [
-                    'post_type' => 'cars',
-                    'post_per_page' => 0,
-                    's' => 'keyword',
-                    'tax_query' => [],
-                    'meta_query' => [
-                        'relation' => 'AND'
-                    ]
-                ];
+                                        <?php if (isset($_GET['price_below']) && ($_GET['price_below'] == $i)): ?>
+                                        selected
+                                        <?php endif; ?>
 
-                if (isset($_GET['keyword'])) {
-                    if (!empty($_GET['keyword'])) {
-                        $args['s'] = $_GET['keyword'];
-                    }
-                }
-
-                if($is_search){
-                    $query = new WP_Query($args);
-                }
-
-                ?>
-
-                <?php if ($query->have_posts()): ?>
-
-                    <?php while ($query->have_posts()): $query->the_post(); ?>
-
-                    <?php if (has_post_thumbnail()): ?>
-
-                        <a href="<?php the_post_thumbnail_url('blog-small'); ?>">
-
-                            <img src="<?php the_post_thumbnail_url('blog-small'); ?>" alt="<?php the_title() ?>" class="img-fluid mb-3 mr-4 img-thumbnail me-4" />
-                            
-                        </a>
-                <?php endif; ?>
-
-                <?php endwhile; ?>
-
-                <?php else: ?>
-
-                    <div class="clearfix mb-3">
-                        <div class="alert alert-danger">
-                            There are no results
+                                        value="<?php echo $i; ?>"><?php echo '$' . number_format($i, 2); ?></option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
                     </div>
 
+                    <button type="submit" class="btn btn-success btn-lg w-100 mb-3">Search</button>
+
+                    <a href="<?php echo home_url('/car-search'); ?>">Clear search</a>
+
+                </form>
+
+                <?php if ($is_search): ?>
+
+                    <?php if ($query->have_posts()): ?>
+
+                        <?php while ($query->have_posts()): $query->the_post(); ?>
+
+
+                            <a href="<?php the_post_thumbnail_url('blog-small'); ?>">
+
+                                <img src="<?php the_post_thumbnail_url('blog-small'); ?>" alt="<?php the_title() ?>" class="img-fluid mb-3 mr-4 img-thumbnail me-4" />
+
+                            </a>
+
+                            <h3><?php the_title() ?></h3>
+
+                        <?php endwhile; ?>
+
+                        <div class="pagination">
+                            <?php
+                            echo paginate_links(array(
+                                'base'         => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
+                                'total'        => $query->max_num_pages,
+                                'current'      => max(1, get_query_var('paged')),
+                                'format'       => '?paged=%#%',
+                                'show_all'     => false,
+                                'type'         => 'plain',
+                                'end_size'     => 2,
+                                'mid_size'     => 1,
+                                'prev_next'    => true,
+                                'prev_text'    => sprintf('<i></i> %1$s', __('Prev', 'text-domain')),
+                                'next_text'    => sprintf('%1$s <i></i>', __('Next', 'text-domain')),
+                                'add_args'     => false,
+                                'add_fragment' => '',
+                            ));
+                            ?>
+                        </div>
+
+                        <?php wp_reset_postdata(); ?>
+
+                    <?php else: ?>
+
+                        <div class="clearfix mb-3">
+                            <div class="alert alert-danger">
+                                There are no results
+                            </div>
+                        </div>
+
+                    <?php endif; ?>
                 <?php endif; ?>
 
             </div>
