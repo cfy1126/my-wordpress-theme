@@ -1,13 +1,54 @@
 <?php 
 
+    $attributes = get_query_var("attributes");
+
     // meta_key and meta_value 帖子过滤
     $args = [
         'post_type' => 'cars',
-        // 'meta_key' => 'color',
-        // 'meta_value' => 'blue'
-        'posts_per_page' => 0
-
+        'posts_per_page' => 0,
+        'tax_query' => [],
+        'meta_query' => []
     ];
+
+    if(isset($attributes['price_below']))
+    {
+        $args['meta_query'][] = array(
+            'key' => 'price',
+            'value' => $attributes['price_below'],
+            'type' => 'numeric',
+            'compare' => '<='
+        );
+    }
+
+    if(isset($attributes['price_above']))
+    {
+        $args['meta_query'][] = array(
+            'key' => 'price',
+            'value' => $attributes['price_above'],
+            'type' => 'numeric',
+            'compare' => '>='
+        );
+    }
+
+    if( isset($attributes["color"]))
+    {
+        $args['meta_query'][] = array(
+            'key' => 'color',
+            'value' => $attributes['color'],
+            'compare' => '='
+        );
+    }
+
+    if( isset($attributes["brand"]))
+    {
+        $args['tax_query'][] = [
+            [
+                'taxonomy' => 'brands',
+                'field' => 'slug',
+                'terms' => array($attributes["brand"])
+            ]
+        ];
+    }
 
     $query = new WP_Query($args);
 ?>

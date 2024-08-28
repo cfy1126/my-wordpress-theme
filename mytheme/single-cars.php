@@ -27,14 +27,14 @@
                     tabindex: 100        
                 -->
                 <!-- <div class="enquiry_form">
-                    <?php gravity_form(1, "Enquire about this car", null, false, ['rego' => get_field('registration')], true, 100, true); ?>
+                    <?php // gravity_form(1, "Enquire about this car", null, false, ['rego' => get_field('registration')], true, 100, true); ?>
                 </div> -->
 
                 <?php get_template_part('includes/form', 'enquiry'); ?>
 
                 <ul>
-                    <!-- <li>Color: <?php echo get_post_meta($post->ID, 'Color', true); ?></li> -->
-                    <!-- <li>Price: <?php echo get_post_meta($post->ID, 'Price', true); ?></li> -->
+                    <!-- <li>Color: <?php //echo get_post_meta($post->ID, 'Color', true); ?></li> -->
+                    <!-- <li>Price: <?php //echo get_post_meta($post->ID, 'Price', true); ?></li> -->
 
                     <li>Color: <?php the_field('color'); ?></li>
                     <li>Registration: <?php the_field('registration'); ?></li>
@@ -70,4 +70,5 @@
 
     </div>
 </section>
+
 <?php get_footer(); ?>
