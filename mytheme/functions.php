@@ -2,6 +2,11 @@
 
 use PHPMailer\PHPMailer\SMTP;
 
+
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
+
 function load_css()
 {
     wp_register_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), '5.3.3', 'all');
@@ -132,6 +137,13 @@ function enquiry_form()
     $headers[] = 'From: My Website <' . $admin_email . '>';
     $headers[] = 'Reply-to: ' . $formdata['email'];
 
+    /**
+     * 调试信息
+     * error_log('调试信息: ' . print_r($formdata, true)); 日志文件中
+     * wp_die(var_dump($formdata)); 页面中 ajax请求中
+     * 断点调试
+     */
+
     // Send to
     $send_to = $admin_email;
 
@@ -167,24 +179,24 @@ function register_navwalker()
 add_action('after_setup_theme', 'register_navwalker');
 
 
-add_action('phpmailer_init', 'custom_mailer');
-// $phpmailer 是一个PHPMailer对象 是由wordpress创建的 PHP 邮件程序实例
-function custom_mailer(PHPMailer $phpmailer)
-{
-    $phpmailer->SetFrom('sean@mrdigital.com.au', 'Sean');
-    $phpmailer->Host = 'email-smtp.us-west-2.amazonaws.com';
-    $phpmailer->Port = 587;
-    $phpmailer->SMTPAuth = true;
-    $phpmailer->SMTPSecure = 'tls';
-    /**
-     * SMTP_LOGIN
-     * SMTP_PASSWORD
-     * 是定义在wp-config.php中的常量
-     */
-    $phpmailer->Username = SMTP_LOGIN;
-    $phpmailer->Password = SMTP_PASSWORD;
-    $phpmailer->IsSMTP();
-}
+// add_action('phpmailer_init', 'custom_mailer');
+// // $phpmailer 是一个PHPMailer对象 是由wordpress创建的 PHP 邮件程序实例
+// function custom_mailer(PHPMailer $phpmailer)
+// {
+//     $phpmailer->SetFrom('sean@mrdigital.com.au', 'Sean');
+//     $phpmailer->Host = 'email-smtp.us-west-2.amazonaws.com';
+//     $phpmailer->Port = 587;
+//     $phpmailer->SMTPAuth = true;
+//     $phpmailer->SMTPSecure = 'tls';
+//     /**
+//      * SMTP_LOGIN
+//      * SMTP_PASSWORD
+//      * 是定义在wp-config.php中的常量
+//      */
+//     $phpmailer->Username = SMTP_LOGIN;
+//     $phpmailer->Password = SMTP_PASSWORD;
+//     $phpmailer->IsSMTP();
+// }
 
 
 function my_shortcode($attrs, $content = null, $tag = '')
