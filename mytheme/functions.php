@@ -25,7 +25,7 @@ add_action('wp_enqueue_scripts', 'load_css');
 function load_js()
 {
     wp_enqueue_script('jquery');
-    wp_register_script('bootstrapjs', get_template_directory_uri() . '/js/bootstrap.min.js', 'jquery', '5.3.3', true);
+    wp_register_script('bootstrapjs', get_template_directory_uri() . '/js/bootstrap.bundle.min.js', 'jquery', '5.3.3', true);
     wp_enqueue_script('bootstrapjs');
 
     wp_register_script('magnific', get_template_directory_uri() . '/js/jquery.magnific-popup.min.js', 'jquery', false, true);
@@ -177,6 +177,15 @@ function register_navwalker()
     require_once get_template_directory() . '/class-wp-bootstrap-navwalker.php';
 }
 add_action('after_setup_theme', 'register_navwalker');
+
+add_filter( 'nav_menu_link_attributes', 'bootstrap5_dropdown_fix' );
+function bootstrap5_dropdown_fix( $atts ) {
+    if ( array_key_exists( 'data-toggle', $atts ) ) {
+        unset( $atts['data-toggle'] );
+        $atts['data-bs-toggle'] = 'dropdown';
+    }
+    return $atts;
+}
 
 
 // add_action('phpmailer_init', 'custom_mailer');
