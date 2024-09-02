@@ -2,6 +2,12 @@
 
     $attributes = get_query_var("attributes");
 
+    /**
+     *  **echo**：用于输出简单的字符串或变量值，适合用于普通的输出操作。
+        **print_r**：用于打印易于理解的变量信息，特别是数组和对象，适合用于调试。
+        **var_dump**：用于打印详细的变量信息，包括类型和值，适合用于深入调试。
+     */
+
     // meta_key and meta_value 帖子过滤
     $args = [
         'post_type' => 'cars',
