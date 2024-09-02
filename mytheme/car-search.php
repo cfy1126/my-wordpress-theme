@@ -133,6 +133,12 @@ if ($is_search) {
                             ?>
                         </div>
 
+                        <!-- 
+                        wp_reset_postdata 函数使用
+                        * 需要使用：如果你使用 WP_Query 类进行自定义查询，并在循环中使用了 the_post() 函数，那么在循环结束后应该调用 wp_reset_postdata()。
+                        * 不需要使用：如果你没有使用自定义查询，或者使用了 get_posts() 并且没有在循环中使用 the_post() 函数，那么不需要调用 wp_reset_postdata()。
+                        -->
+
                         <?php wp_reset_postdata(); ?>
 
                     <?php else: ?>
